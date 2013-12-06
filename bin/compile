@@ -113,7 +113,7 @@ function install_node_deps() {
     source ${basedir}/compile_node $BUILD_DIR $CACHE_DIR
 
     local node_path='vendor/node'
-    
+
     # Symlink node to /app/vendor/node so node and its modules are runnable.
 
     ln -s ${BUILD_DIR}/${node_path}/ /app/${node_path}
@@ -356,6 +356,10 @@ mkdir -p "bin"
 
 cat > "bin/run" <<SH
 #!/usr/bin/env bash
+
+if [ -x app/console ]; then
+    php app/console cache:clear -e prod
+fi
 
 pmsgr=/tmp/pmsgr
 rm -f \$pmsgr
